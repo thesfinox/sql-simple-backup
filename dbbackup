@@ -4,9 +4,27 @@
 # After the backup it uploads the SQL file to a WebDAV
 # server.
 #
+# Configuration:
+#
+# - $HOME/.my.cnf: insert MySQL client credentials. E.g.:
+#
+#      > [client]
+#      > user = username
+#      > password = password
+#
+#   Remember to 'chmod 600 $HOME/.my.cnf' after.
+#
+# - $HOME/.dbdumpbackup/config: insert WebDAV credentials:
+#
+#      > USR="username"
+#      > PSW="password"
+#      > DBNAME="database name"
+#      > REMOTE="WebDAV server"
+#
+#   Remember to 'chmod 600 $HOME/.dbdumpbackup/config'
+#
 
-DBNAME="db_name"
-REMOTE=""
+source $HOME/.dbdumpbackup/config
 
 echo "MySQL backup started on `date +%F-%k:%M:%S`."
 
@@ -16,5 +34,7 @@ echo "MySQL backup in progress..."
 echo "MySQL backup uploading..."
 curl --user $USR:$PSW -T $HOME/$DBNAME_$(date +%F).sql -o /dev/stdout $REMOTE
 rm $HOME/$DBNAME_$(date +%F).sql
+
+unset USR PSW DBNAME REMOTE
 
 echo "MySQL backup finished on `date +%F-%k:%M:%S`."
