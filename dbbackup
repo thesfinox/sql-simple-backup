@@ -29,11 +29,11 @@ source $HOME/.dbdumpbackup/config
 echo "MySQL backup started on `date +%F-%k:%M:%S`."
 
 echo "MySQL backup in progress..."
-/usr/bin/mysqldump --defaults-extra-file=$HOME/.my.cnf --single-transaction --quick --lock-tables=false $DBNAME > $HOME/$DBNAME_$(date +%F).sql
+/usr/bin/mysqldump --defaults-extra-file=$HOME/.my.cnf --single-transaction --quick --lock-tables=false $DBNAME > $HOME/$DBNAME-$(date +%F).sql
 
 echo "MySQL backup uploading..."
-curl --user $USR:$PSW -T $HOME/$DBNAME_$(date +%F).sql -o /dev/stdout $REMOTE
-rm $HOME/$DBNAME_$(date +%F).sql
+curl --user $USR:$PSW -T $HOME/$DBNAME-$(date +%F).sql -o /dev/stdout $REMOTE
+rm $HOME/$DBNAME-$(date +%F).sql
 
 unset USR PSW DBNAME REMOTE
 
